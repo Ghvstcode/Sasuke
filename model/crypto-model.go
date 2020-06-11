@@ -1,6 +1,7 @@
 package model
 
 import (
+	"fmt"
 	"encoding/json"
 	"time"
     "strconv"
@@ -40,10 +41,26 @@ func (m Markets) FormattedDate() string {
 }
 
 //JSON returns string
-func (m Markets) JSON() string {
-	mJSON, err := json.Marshal(m)
+func (r Result) JSON() string {
+	rJSON, err := json.Marshal(r)
 	if err != nil {
 		return ""
 	}
-	return string(mJSON)
+	return string(rJSON)
+}
+
+func (m Markets) Result() Result {
+	return Result{   
+		Name: m.Name,      
+		Price: m.Price,      
+		Volume: m.Volume24H,    
+		Date: m.FormattedDate(),      
+	}
+}
+
+func (r Result) TextOutput() string {
+	p := fmt.Sprintf(
+		"Name: %s\nPrice : %d\nVolume: %s\nDate: %s\n",
+		 r.Name, r.Price, r.Volume, r.Date)
+	return p
 }

@@ -28,23 +28,18 @@ func NewCryptoClient() *CryptoClient {
 	}
 }
 
-func (hc *CryptoClient) Fetch(c Currency , cc CryptoCurrency) (model.Comic, error) {
-	Url := "https://www.worldcoinindex.com/apiservice/ticker?key=z4Qdvwrkex1Viug7jwgsHvWKv1Af5R&label=",cc,"btc&fiat=",c
-	resp, err := hc.client.Get(hc.buildURL(n))
+func (hc *CryptoClient) Fetch(c string , cc string) (model.Result, error) {
+	Url := "https://www.worldcoinindex.com/apiservice/ticker?key=z4Qdvwrkex1Viug7jwgsHvWKv1Af5R&label="+cc+"btc&fiat="+c
+	resp, err := hc.client.Get(Url)
 	if err != nil {
-		return model.Comic{}, err
+		return model.Result{}, err
 	}
 	defer resp.Body.Close()
 
-	var comicResp model.ComicResponse
-	if err := json.NewDecoder(resp.Body).Decode(&comicResp); err != nil {
-		return model.Comic{}, err
+	var cResp model.Markets
+	if err := json.NewDecoder(resp.Body).Decode(&cResp); err != nil {
+		return model.Result{}, err
 	}
 
-	if save {
-		if err := hc.SaveToDisk(comicResp.Img, "."); err != nil {
-			fmt.Println("Failed to save image!")
-		}
-	}
-	return comicResp.Comic(), nil
+	return cResp.Result(), nil
 }
