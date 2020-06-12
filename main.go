@@ -5,6 +5,7 @@ import (
 	"flag"
 	"fmt"
 	"cryptocli/client"
+	"log"
 )
 
 func main () {
