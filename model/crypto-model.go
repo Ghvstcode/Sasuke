@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"encoding/json"
 	"time"
-    //"strconv"
 )
 // Cryptoresponse is
 type Cryptoresponse []struct {
@@ -53,9 +52,11 @@ func (c Cryptoresponse) FormattedDate() string {
 //JSON returns string
 func (r Result) JSON() string {
 	rJSON, err := json.Marshal(r)
+	
 	if err != nil {
 		return ""
 	}
+
 	return string(rJSON)
 }
 

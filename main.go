@@ -1,4 +1,3 @@
-//Key:z4Qdvwrkex1Viug7jwgsHvWKv1Af5R
 package main
 
 import (
@@ -26,6 +25,7 @@ func main () {
 	cryptoClient := client.NewCryptoClient()
 
 	crypto, err := cryptoClient.Fetch(*fiatCurrency, *nameOfCrypto)
+
 	if err != nil {
 		log.Println(err)
 	}
