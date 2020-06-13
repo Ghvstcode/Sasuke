@@ -4,9 +4,13 @@ import (
 	"time"
 	"net/http"
 	"encoding/json"
+	"os"
+	"log"
 
 	"cryptocli/model"
+	"github.com/joho/godotenv"
 )
+
 const (
 	baseURL string = "https://www.worldcoinindex.com/apiservice/ticker?key=z4Qdvwrkex1Viug7jwgsHvWKv1Af5R"
 )
@@ -17,6 +21,13 @@ const (
 type CryptoClient struct {
 	client  *http.Client
 	baseURL string
+}
+
+func init() {
+    // loads values from .env into the system
+    if err := godotenv.Load(); err != nil {
+        log.Print("No .env file found")
+    }
 }
 
 //NewCryptoClient is exported ...
@@ -32,7 +43,13 @@ func NewCryptoClient() *CryptoClient {
 
 //Fetch is exported ...
 func (hc *CryptoClient) Fetch(c string , cc string) (model.Result, error) {
-	URL := "https://api.nomics.com/v1/currencies/ticker?key=3990ec554a414b59dd85d29b2286dd85&interval=1d&ids="+cc+"&convert="+c
+	Key, exists := os.LookupEnv("API_KEY")
+
+	if !exists {
+		log.Print("Env Variable not found")
+	}
+
+	URL := "https://api.nomics.com/v1/currencies/ticker?key="+Key+"&interval=1d&ids="+cc+"&convert="+c
 	resp, err := hc.client.Get(URL)
 
 	if err != nil {
