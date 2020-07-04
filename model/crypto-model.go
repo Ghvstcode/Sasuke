@@ -1,8 +1,9 @@
 package model
 
 import (
-	"fmt"
 	"encoding/json"
+	"fmt"
+	"log"
 	"time"
 )
 // Cryptoresponse is
@@ -54,6 +55,7 @@ func (r Result) JSON() string {
 	rJSON, err := json.Marshal(r)
 	
 	if err != nil {
+		log.Fatal("ooopsss! an error occurred, please try again")
 		return ""
 	}
 

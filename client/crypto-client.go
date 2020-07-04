@@ -1,14 +1,15 @@
 package client
 
 import (
-	"time"
-	"net/http"
 	"encoding/json"
-	"os"
 	"log"
+	"net/http"
+	"os"
+	"time"
 
-	"cryptocli/model"
 	"github.com/joho/godotenv"
+
+	"github.com/GhvstCode/cryptocli/model"
 )
 
 const (
@@ -53,7 +54,7 @@ func (hc *CryptoClient) Fetch(c string , cc string) (model.Result, error) {
 	resp, err := hc.client.Get(URL)
 
 	if err != nil {
-		return model.Result{}, err
+		log.Fatal("ooopsss an error occurred, please try again")
 	}
 
 	defer resp.Body.Close()
@@ -61,7 +62,7 @@ func (hc *CryptoClient) Fetch(c string , cc string) (model.Result, error) {
 	var cResp model.Cryptoresponse
 
 	if err := json.NewDecoder(resp.Body).Decode(&cResp); err != nil {
-		return model.Result{}, err
+		log.Fatal("ooopsss! an error occurred, please try again")
 	}
 
 	return cResp.Result(), nil
