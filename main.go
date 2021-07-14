@@ -3,10 +3,18 @@ package main
 import (
 	"flag"
 	"fmt"
+	"github.com/joho/godotenv"
 	"log"
 
-	"github.com/GhvstCode/cryptocli/client"
+	"github.com/Ghvstcode/Sasuke/client"
 )
+
+func init() {
+	// loads values from .env file into the system
+	if err := godotenv.Load(); err != nil {
+		log.Print("No .env file found")
+	}
+}
 
 func main () {
 	fiatCurrency := flag.String(

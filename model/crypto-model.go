@@ -6,7 +6,8 @@ import (
 	"log"
 	"time"
 )
-// Cryptoresponse is
+
+// CryptoResponse is the model of the API response. It represents a single cryptocurrency unit received from the API
 type Cryptoresponse []struct {
 	ID                string    `json:"id"`
 	Currency          string    `json:"currency"`
@@ -33,8 +34,6 @@ type Cryptoresponse []struct {
 }
 
 
-
-
 // Result is ...
 type Result struct {
 	Name      string  `json:"Name"`
@@ -45,36 +44,37 @@ type Result struct {
 	Date      string   `json:"Timestamp"`
 }
 
-//FormattedDate returns string
+//FormattedDate returns the date in a string format.
 func (c Cryptoresponse) FormattedDate() string {
 	return c[0].PriceTimestamp.String()
 }
 
-//JSON returns string
+//JSON returns the JSON version of the result struct
 func (r Result) JSON() string {
 	rJSON, err := json.Marshal(r)
 	
 	if err != nil {
-		log.Fatal("ooopsss! an error occurred, please try again")
+		log.Fatal("An error occurred, please try again")
 		return ""
 	}
 
 	return string(rJSON)
 }
 
-//Result is exported ...
+
+//Result returns the result struct which struct is returned back to the user! which is returned back to the user.
 func (c Cryptoresponse) Result() Result {
 	return Result{   
-		Name: c[0].Name,      
-		Price: string(c[0].Price),      
-		Rank: c[0].Rank,
-		High: c[0].High,
+		Name:              c[0].Name,
+		Price:             c[0].Price,
+		Rank:              c[0].Rank,
+		High:              c[0].High,
 		CirculatingSupply: c[0].CirculatingSupply,    
-		Date: c.FormattedDate(),      
+		Date:              c.FormattedDate(),
 	}
 }
 
-//TextOutput is exported ...
+//TextOutput is the re
 func (r Result) TextOutput() string {
 	p := fmt.Sprintf(
 		"Name: %s\nPrice : %s\nRank: %s\nHigh: %s\nCirculatingSupply: %s\nDate: %s\n",

@@ -1,0 +1,2 @@
+ERROR: 2021/07/14 23:47:32 crypto-client.go:53: An Error occurred, please try again <nil>
+ERROR: 2021/07/14 23:47:32 crypto-client.go:64: An Internal error occurred, unable to retrieve cryptocurrency

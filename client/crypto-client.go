@@ -2,34 +2,28 @@ package client
 
 import (
 	"encoding/json"
+	"fmt"
+	l "github.com/Ghvstcode/Sasuke/logger"
 	"log"
 	"net/http"
 	"os"
 	"time"
 
-	"github.com/joho/godotenv"
-
-	"github.com/GhvstCode/cryptocli/model"
+	"github.com/Ghvstcode/Sasuke/model"
 )
 
 const (
-	baseURL string = "https://www.worldcoinindex.com/apiservice/ticker?key=z4Qdvwrkex1Viug7jwgsHvWKv1Af5R"
+	baseURL string = "https://api.nomics.com/v1/currencies/ticker?"
 )
 
 
 
-//CryptoClient is exported...
+//CryptoClient a struct containing a HTTP client & a base URL
 type CryptoClient struct {
 	client  *http.Client
 	baseURL string
 }
 
-func init() {
-    // loads values from .env into the system
-    if err := godotenv.Load(); err != nil {
-        log.Print("No .env file found")
-    }
-}
 
 //NewCryptoClient is exported ...
 func NewCryptoClient() *CryptoClient {
@@ -50,11 +44,11 @@ func (hc *CryptoClient) Fetch(c string , cc string) (model.Result, error) {
 		log.Print("Env Variable not found")
 	}
 
-	URL := "https://api.nomics.com/v1/currencies/ticker?key="+Key+"&interval=1d&ids="+cc+"&convert="+c
+	URL := baseURL+"key="+Key+"&interval=1d&ids="+cc+"&convert="+c
 	resp, err := hc.client.Get(URL)
 
-	if err != nil {
-		log.Fatal("ooopsss an error occurred, please try again")
+	if err != nil ||resp.StatusCode != 200 {
+		l.ErrorLogger.Fatalln("An Error occurred, please try again")
 	}
 
 	defer resp.Body.Close()
@@ -62,8 +56,10 @@ func (hc *CryptoClient) Fetch(c string , cc string) (model.Result, error) {
 	var cResp model.Cryptoresponse
 
 	if err := json.NewDecoder(resp.Body).Decode(&cResp); err != nil {
-		log.Fatal("ooopsss! an error occurred, please try again")
+		fmt.Println("Error", err)
+		l.ErrorLogger.Println("An Internal error occurred, unable to retrieve cryptocurrency")
 	}
+
 
 	return cResp.Result(), nil
 }

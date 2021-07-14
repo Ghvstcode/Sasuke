@@ -1,5 +1,5 @@
-module github.com/GhvstCode/cryptocli
+module github.com/Ghvstcode/Sasuke
 
-go 1.14
+go 1.15
 
 require github.com/joho/godotenv v1.3.0
